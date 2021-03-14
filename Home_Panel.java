@@ -19,13 +19,13 @@ public class Home_Panel extends JPanel{
 		this.setLayout(null);
 		JPanel firstHalf = new JPanel();
 		firstHalf.setLayout(new GridLayout(1, 3));
-		firstHalf.setBounds(25, 25, 955, 350); //this must be done when layout is null
+		firstHalf.setBounds(25, 25, 955, 375); //this must be done when layout is null
 		//add headers and paragraphs as normal to boxlayout panels
 		//add boxlayout panels to firstHalf
 
 		JPanel secondHalf = new JPanel();
 		secondHalf.setLayout(new GridLayout(1, 2));
-		secondHalf.setBounds(25, 375, 955, 350); //this must be done when layout is null
+		secondHalf.setBounds(25, 375, 955, 375); //this must be done when layout is null
 		// grid w 1r, 3c; 3c have new jPanels w box layout set; box layout
 		
 		JPanel panel1 = new JPanel();
@@ -40,7 +40,7 @@ public class Home_Panel extends JPanel{
 		textArea1.setRows(3);
 		textArea1.setWrapStyleWord(true);
 		textArea1.setLineWrap(true);
-		textArea1.setFont(new Font("Arial", Font.TRUETYPE_FONT, 18));
+		textArea1.setFont(new Font("Arial", Font.TRUETYPE_FONT, 16));
 		textArea1.setEditable(false);
 		
 		JTextArea textArea2 = new JTextArea(2,20);
@@ -48,7 +48,7 @@ public class Home_Panel extends JPanel{
 		textArea2.setRows(3);
 		textArea2.setWrapStyleWord(true);
 		textArea2.setLineWrap(true);
-		textArea2.setFont(new Font("Arial", Font.TRUETYPE_FONT, 18));
+		textArea2.setFont(new Font("Arial", Font.TRUETYPE_FONT, 17));
 		textArea2.setEditable(false);
 
 		JTextArea textArea3 = new JTextArea(2,20);
@@ -56,7 +56,7 @@ public class Home_Panel extends JPanel{
 		textArea3.setRows(3);
 		textArea3.setWrapStyleWord(true);
 		textArea3.setLineWrap(true);
-		textArea3.setFont(new Font("Arial", Font.TRUETYPE_FONT, 18));
+		textArea3.setFont(new Font("Arial", Font.TRUETYPE_FONT, 14));
 		textArea3.setEditable(false);
 
 		JLabel label1 = new JLabel("About", JLabel.CENTER);
@@ -86,11 +86,11 @@ public class Home_Panel extends JPanel{
 		firstHalf.add(panel3);
 		
 		PicturePanel pic = new PicturePanel("images/humanResources.jpg");
-		pic.rescale(256, 425);
+		pic.rescale(350, 375);
 		secondHalf.add(pic);
 		
-		PicturePanel pic1 = new PicturePanel("images/humanResources1.png");
-		pic1.rescale(256, 425);
+		PicturePanel pic1 = new PicturePanel("images/humanResources1.jpg");
+		pic1.rescale(256, 375);
 		secondHalf.add(pic1);
 		
 		add(firstHalf);
