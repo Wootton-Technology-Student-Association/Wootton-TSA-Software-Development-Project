@@ -66,9 +66,11 @@ public class Home_Panel extends JPanel{
 		JLabel label3 = new JLabel("Description", JLabel.CENTER);
 		label3.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 25));
 
-		String text1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-		String text2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-		String text3 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+		String text1 = "To create Project Lift America, we split into two teams: the Server team and the Graphical User Interface team. Each team was headed by a team captain that split up the workload and supervised the development of the respective parts. The GUI team divided work among tabs in the nav bar (Home Tab, Find Resources Tab, Settings Tab). The server team divided work based on functionality (signup functionality, login functionality, and changing the user properties functionality). Throughout the project, the two team captains communicated closely with each other to create the final project presented today."; 
+		String text2 = "The purpose of the Project Lift America Software Development project was created with American citizens struggling through the pandemic in mind. We created Project Lift America, a fictional company created to address the need for assistance. Project Lift America understands that Americans need other resources than doctors. This is why we created a fictional COVID-19 nonprofit to address the assistance gap felt by citizens across America.";
+		String text3 = "To create Project Lift America, we utilized Java Graphical User Interface so that users are able to create accounts and login to view their information in the Settings tab. The user can also apply for a loan at a bank and find a set of resources using server pull requests to get a map powered by Google. Design patterns such as the Singleton design pattern are apparent throughout our use of Graphical User Interface and the Server side. The server team also used the Observer and Adapter design patterns. Each GUI only has one instance, so this prevents others from inheriting the data of our clients for themselves. We also utilized a modern look and feel to attract our users. We used http requests to connect to the server to make communication between server and GUI as secure as possible.";
+				
+		
 		textArea1.setText(text1);
 		textArea2.setText(text2);
 		textArea3.setText(text3);
@@ -84,13 +86,15 @@ public class Home_Panel extends JPanel{
 		firstHalf.add(panel3);
 		
 		PicturePanel pic = new PicturePanel("images/humanResources.jpg");
-		System.out.println("pic width: " + pic.getWidth());
-		System.out.println("pic height: " + pic.getHeight());
 		pic.rescale(256, 425);
 		secondHalf.add(pic);
+		
+		PicturePanel pic1 = new PicturePanel("images/humanResources1.png");
+		pic1.rescale(256, 425);
+		secondHalf.add(pic1);
+		
 		add(firstHalf);
 		add(secondHalf);
-		// grab more rectangular; set to 256, 375
 		
 	}
 	
