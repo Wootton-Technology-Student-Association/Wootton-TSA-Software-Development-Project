@@ -19,19 +19,14 @@ public class Home_Panel extends JPanel{
 		this.setLayout(null);
 		JPanel firstHalf = new JPanel();
 		firstHalf.setLayout(new GridLayout(1, 3));
-		firstHalf.setBounds(25, 25, 955, 300); //this must be done when layout is null
+		firstHalf.setBounds(25, 25, 955, 350); //this must be done when layout is null
 		//add headers and paragraphs as normal to boxlayout panels
 		//add boxlayout panels to firstHalf
 
 		JPanel secondHalf = new JPanel();
 		secondHalf.setLayout(new GridLayout(1, 2));
-		secondHalf.setBounds(25, 350, 955, 300); //this must be done when layout is null
+		secondHalf.setBounds(25, 375, 955, 350); //this must be done when layout is null
 		// grid w 1r, 3c; 3c have new jPanels w box layout set; box layout
-		
-		PicturePanel pic1 = new PicturePanel("");
-		PicturePanel pic2 = new PicturePanel("");
-		secondHalf.add(pic1);
-		secondHalf.add(pic2);
 		
 		JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
@@ -88,8 +83,15 @@ public class Home_Panel extends JPanel{
 		firstHalf.add(panel2);
 		firstHalf.add(panel3);
 		
+		PicturePanel pic = new PicturePanel("images/humanResources.jpg");
+		System.out.println("pic width: " + pic.getWidth());
+		System.out.println("pic height: " + pic.getHeight());
+		pic.rescale(256, 425);
+		secondHalf.add(pic);
 		add(firstHalf);
 		add(secondHalf);
+		// grab more rectangular; set to 256, 375
+		
 	}
 	
 	public class PicturePanel extends JPanel{
