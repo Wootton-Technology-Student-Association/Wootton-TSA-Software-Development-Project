@@ -52,6 +52,7 @@ public class Main {
 
         UserController userController = new UserController(0,ds);
         server.post("/createUser",userController.createUser(),roles(Roles.DEFAULT,Roles.ADMIN));
+        server.post("/validateToken",userController.validateToken(),roles(Roles.USER,Roles.ADMIN));
         server.post("/login",userController.loginUser(jwtFactory),roles(Roles.DEFAULT));
 
         PasswordController passwordController = new PasswordController(0,ds);
