@@ -47,6 +47,7 @@ public class AccessManagerJWT implements AccessManager,LoggingSubject,UsernameSu
             try {
                 handler.handle(ctx);
             } catch (Exception e) {
+                e.printStackTrace();
                 ctx.status(404).json(new ErrorJson(false,"Failed accessing URL"));
             }
 

@@ -90,9 +90,13 @@ public class UserController {
                     ctx.status(401).json(new ErrorJson(false,"Unauthorized"));
                 }
 
-
-
             }
+        };
+    }
+
+    public Handler validateToken(){
+        return ctx ->{
+          ctx.json(new ErrorJson(true,""));
         };
     }
 

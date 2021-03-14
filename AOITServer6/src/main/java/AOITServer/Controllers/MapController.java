@@ -91,7 +91,7 @@ public class MapController {
             if(address != null) {
                 String[] coords = sendGeoLocRequest(address);
 
-                ctx.result(sendNearbySearchRequest(coords [0],coords[1],radius,"food bank" ));
+                ctx.result(sendNearbySearchRequest(coords [0],coords[1],radius,"food%20bank" ));
 
             }
         };
@@ -108,7 +108,7 @@ public class MapController {
             if(address != null) {
                 String[] coords = sendGeoLocRequest(address);
 
-                ctx.result(sendNearbySearchRequest(coords [0],coords[1],radius,"thrift store" ));
+                ctx.result(sendNearbySearchRequest(coords [0],coords[1],radius,"thrift%20store" ));
 
             }
         };
@@ -125,17 +125,22 @@ public class MapController {
             if(address != null) {
                 String[] coords = sendGeoLocRequest(address);
 
-                String electric = sendNearbySearchRequest(coords [0],coords[1],radius,"Electric Company");
-                String sewer = sendNearbySearchRequest(coords [0],coords[1],radius,"water company");
-                String water = sendNearbySearchRequest(coords [0],coords[1],radius,"water store");
+                String electric = sendNearbySearchRequest(coords [0],coords[1],radius,"electric%20company");
+                String sewer = sendNearbySearchRequest(coords [0],coords[1],radius,"water%20company");
+                String water = sendNearbySearchRequest(coords [0],coords[1],radius,"water%20store");
 
+                System.out.println(electric);
+                System.out.println(sewer);
+                System.out.println(water);
 
                 JsonArray jsonArray = new JsonArray();
-                jsonArray.add(JsonParser.parseString(electric));
-                jsonArray.add(JsonParser.parseString(sewer));
-                jsonArray.add(JsonParser.parseString(water));
+                jsonArray.add(JsonParser.parseString(electric).getAsJsonObject());
+                jsonArray.add(JsonParser.parseString(sewer).getAsJsonObject());
+                jsonArray.add(JsonParser.parseString(water).getAsJsonObject());
 
-                ctx.result(jsonArray.getAsString());
+                System.out.println(jsonArray.toString());
+
+                ctx.result(jsonArray.toString());
 
 
 

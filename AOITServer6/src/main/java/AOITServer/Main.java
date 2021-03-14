@@ -52,6 +52,7 @@ public class Main {
 
         UserController userController = new UserController(0,ds);
         server.post("/createUser",userController.createUser(),roles(Roles.DEFAULT,Roles.ADMIN));
+        server.post("/validateToken",userController.validateToken(),roles(Roles.USER,Roles.ADMIN));
         server.post("/login",userController.loginUser(jwtFactory),roles(Roles.DEFAULT));
 
         PasswordController passwordController = new PasswordController(0,ds);
@@ -70,6 +71,7 @@ public class Main {
         server.get("/getShelters",mapController.getShelter(),roles(Roles.USER,Roles.ADMIN));
         server.get("/getFoodBanks",mapController.getFoodBanks(),roles(Roles.USER,Roles.ADMIN));
         server.get("/getThriftStores",mapController.getThriftStores(),roles(Roles.USER,Roles.ADMIN));
+        server.get("/getPublicServices",mapController.getPublicServices(),roles(Roles.USER,Roles.ADMIN));
 
 
          ServerLogging serverLog = new ServerLogging(0,ds);
