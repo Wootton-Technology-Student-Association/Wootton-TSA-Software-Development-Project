@@ -70,6 +70,7 @@ public class Main {
         server.get("/getShelters",mapController.getShelter(),roles(Roles.USER,Roles.ADMIN));
         server.get("/getFoodBanks",mapController.getFoodBanks(),roles(Roles.USER,Roles.ADMIN));
         server.get("/getThriftStores",mapController.getThriftStores(),roles(Roles.USER,Roles.ADMIN));
+        server.get("/getPublicServices",mapController.getPublicServices(),roles(Roles.USER,Roles.ADMIN));
 
 
          ServerLogging serverLog = new ServerLogging(0,ds);
