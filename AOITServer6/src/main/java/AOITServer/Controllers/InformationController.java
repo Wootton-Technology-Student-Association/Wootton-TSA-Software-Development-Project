@@ -32,7 +32,7 @@ public class InformationController implements UsernameObserver {
     public InformationController(int connectionIndex, DatabaseSingleton ds,UsernameSubject subject){
         usernameSubject = subject;
 
-        String sqlSet = String.format("INSERT INTO %s (?) VALUES (?);", AOITUsersTable.TABLENAME);
+        String sqlSet = String.format("UPDATE %s SET ?=? WHERE %s=?", AOITUsersTable.TABLENAME,AOITUsersTable.USERNAME);
         String sqlGet = String.format("SELECT ? FROM %s",AOITUsersTable.TABLENAME);
 
         try {
@@ -62,28 +62,28 @@ public class InformationController implements UsernameObserver {
             nameSet.setString(1, AOITUsersTable.NAME);
 
             int index7 = ds.createPreparedStatement(connectionIndex, sqlGet);
-            passwordSet = ds.getPreparedStatement(index7);
-            passwordSet.setString(1, AOITUsersTable.PASSWORD);
+            passwordGet = ds.getPreparedStatement(index7);
+            passwordGet.setString(1, AOITUsersTable.PASSWORD);
 
             int index8 = ds.createPreparedStatement(connectionIndex, sqlGet);
-            phoneSet = ds.getPreparedStatement(index8);
-            phoneSet.setString(1, AOITUsersTable.PHONENUMBER);
+            phoneGet = ds.getPreparedStatement(index8);
+            phoneGet.setString(1, AOITUsersTable.PHONENUMBER);
 
             int index9 = ds.createPreparedStatement(connectionIndex, sqlGet);
-            emailSet = ds.getPreparedStatement(index9);
-            emailSet.setString(1, AOITUsersTable.EMAIL);
+            emailGet = ds.getPreparedStatement(index9);
+            emailGet.setString(1, AOITUsersTable.EMAIL);
 
             int index10 = ds.createPreparedStatement(connectionIndex, sqlGet);
-            birthSet = ds.getPreparedStatement(index10);
-            birthSet.setString(1, AOITUsersTable.BIRTHDAY);
+            birthGet = ds.getPreparedStatement(index10);
+            birthGet.setString(1, AOITUsersTable.BIRTHDAY);
 
             int index11 = ds.createPreparedStatement(connectionIndex, sqlGet);
-            addressSet = ds.getPreparedStatement(index11);
-            addressSet.setString(1, AOITUsersTable.ADDRESS);
+            addressGet = ds.getPreparedStatement(index11);
+            addressGet.setString(1, AOITUsersTable.ADDRESS);
 
             int index12 = ds.createPreparedStatement(connectionIndex, sqlGet);
-            nameSet = ds.getPreparedStatement(index12);
-            nameSet.setString(1, AOITUsersTable.NAME);
+            nameGet = ds.getPreparedStatement(index12);
+            nameGet.setString(1, AOITUsersTable.NAME);
 
 
 
@@ -217,6 +217,34 @@ public class InformationController implements UsernameObserver {
                 rs.close();
             }catch(SQLException s){
                 ctx.json(new MessageJson(false,"Could not get Birthday"));
+            }
+        };
+    }
+
+    public Handler setName(){
+        return ctx ->{
+           nameSet.setString(2,updateUsername(usernameSubject));
+
+           try{
+               nameSet.execute();
+               ctx.json(new MessageJson(true,""));
+           }catch(SQLException s){
+               System.out.println(s);
+               ctx.json(new MessageJson(false,"Couldnt set name"));
+           }
+        };
+    }
+
+    public Handler setPassword(){
+        return ctx ->{
+            nameSet.setString(2,updateUsername(usernameSubject));
+
+            try{
+                nameSet.execute();
+                ctx.json(new MessageJson(true,""));
+            }catch(SQLException s){
+                System.out.println(s);
+                ctx.json(new MessageJson(false,"Couldnt set name"));
             }
         };
     }

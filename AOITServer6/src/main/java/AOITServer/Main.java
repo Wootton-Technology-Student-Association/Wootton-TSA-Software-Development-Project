@@ -2,10 +2,7 @@ package AOITServer;
 
 import AOITServer.Adapters.ConcreteEmailClient;
 import AOITServer.Adapters.ConcreteHttpRequestClient;
-import AOITServer.Controllers.DailyEventsController;
-import AOITServer.Controllers.MapController;
-import AOITServer.Controllers.PasswordController;
-import AOITServer.Controllers.UserController;
+import AOITServer.Controllers.*;
 import AOITServer.Factories.JWTConcreteFactory;
 import AOITServer.Observers.AccessManagerJWT;
 import AOITServer.Observers.ServerLogging;
@@ -73,8 +70,19 @@ public class Main {
         server.get("/getThriftStores",mapController.getThriftStores(),roles(Roles.USER,Roles.ADMIN));
         server.get("/getPublicServices",mapController.getPublicServices(),roles(Roles.USER,Roles.ADMIN));
 
+        InformationController informationController = new InformationController(0,ds,accessManager);
+        server.get("/getName",informationController.getName(),roles(Roles.USER,Roles.ADMIN));
+        server.get("/getPassword",informationController.getPassword(),roles(Roles.USER,Roles.ADMIN));
+        server.get("/getEmail",informationController.getEmail(),roles(Roles.USER,Roles.ADMIN));
+        server.get("/getPhone",informationController.getPhone(),roles(Roles.USER,Roles.ADMIN));
+        server.get("/getBirth",informationController.getBirthday(),roles(Roles.USER,Roles.ADMIN));
+        server.get("/getAddress",informationController.getAddress(),roles(Roles.USER,Roles.ADMIN));
 
-         ServerLogging serverLog = new ServerLogging(0,ds);
+
+
+
+
+        ServerLogging serverLog = new ServerLogging(0,ds);
 
         accessManager.addLoggingObserver(serverLog);
 
