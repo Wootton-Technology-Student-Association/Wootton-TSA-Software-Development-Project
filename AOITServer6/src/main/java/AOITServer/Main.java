@@ -77,6 +77,13 @@ public class Main {
         server.get("/getPhone",informationController.getPhone(),roles(Roles.USER,Roles.ADMIN));
         server.get("/getBirth",informationController.getBirthday(),roles(Roles.USER,Roles.ADMIN));
         server.get("/getAddress",informationController.getAddress(),roles(Roles.USER,Roles.ADMIN));
+        server.post("/setName",informationController.setName(),roles(Roles.USER,Roles.ADMIN));
+        server.post("/setPassword",informationController.setPassword(),roles(Roles.USER,Roles.ADMIN));
+        server.post("/setEmail",informationController.setEmail(),roles(Roles.USER,Roles.ADMIN));
+        server.post("/setPhone",informationController.setPhoneNumber(),roles(Roles.USER,Roles.ADMIN));
+        server.post("/setBirth",informationController.setBirthday(),roles(Roles.USER,Roles.ADMIN));
+        server.post("/setAddress",informationController.setAddress(),roles(Roles.USER,Roles.ADMIN));
+
 
 
 

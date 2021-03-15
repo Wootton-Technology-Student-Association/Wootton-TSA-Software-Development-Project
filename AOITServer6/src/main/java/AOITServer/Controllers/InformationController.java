@@ -41,9 +41,11 @@ public class InformationController implements UsernameObserver {
             passwordSet = ds.getPreparedStatement(index1);
             passwordSet.setString(1, AOITUsersTable.PASSWORD);
 
+
             int index2 = ds.createPreparedStatement(connectionIndex, sqlSet);
             phoneSet = ds.getPreparedStatement(index2);
             phoneSet.setString(1, AOITUsersTable.PHONENUMBER);
+
 
             int index3 = ds.createPreparedStatement(connectionIndex, sqlSet);
             emailSet = ds.getPreparedStatement(index3);
@@ -223,28 +225,138 @@ public class InformationController implements UsernameObserver {
 
     public Handler setName(){
         return ctx ->{
-           nameSet.setString(2,updateUsername(usernameSubject));
+            String name = ctx.queryParam("Name");
 
-           try{
-               nameSet.execute();
-               ctx.json(new MessageJson(true,""));
-           }catch(SQLException s){
-               System.out.println(s);
-               ctx.json(new MessageJson(false,"Couldnt set name"));
-           }
+            if(name != null) {
+
+                try {
+                    nameSet.setString(2,name);
+                    nameSet.setString(3,updateUsername(usernameSubject));
+                    nameSet.execute();
+
+                    ctx.json(new MessageJson(true, "Name set"));
+                } catch (SQLException s) {
+                    System.out.println(s);
+                    ctx.json(new MessageJson(false, "Couldnt set name"));
+                }
+            }
+            else{
+                ctx.json(new MessageJson(false,"Query param \"Name\" not found"));
+            }
         };
     }
 
     public Handler setPassword(){
         return ctx ->{
-            nameSet.setString(2,updateUsername(usernameSubject));
+            String password = ctx.queryParam("Password");
 
-            try{
-                nameSet.execute();
-                ctx.json(new MessageJson(true,""));
-            }catch(SQLException s){
-                System.out.println(s);
-                ctx.json(new MessageJson(false,"Couldnt set name"));
+            if(password != null) {
+
+                try {
+                    passwordSet.setString(2,password);
+                    passwordSet.setString(3,updateUsername(usernameSubject));
+                    passwordSet.execute();
+
+                    ctx.json(new MessageJson(true, "Password set"));
+                } catch (SQLException s) {
+                    System.out.println(s);
+                    ctx.json(new MessageJson(false, "Couldnt set password"));
+                }
+            }
+            else{
+                ctx.json(new MessageJson(false,"Query param \"Password\" not found"));
+            }
+        };
+    }
+
+    public Handler setBirthday(){
+        return ctx ->{
+            String birthday = ctx.queryParam("Birthday");
+
+            if(birthday != null) {
+
+                try {
+                    birthSet.setString(2,birthday);
+                    birthSet.setString(3,updateUsername(usernameSubject));
+                    birthSet.execute();
+
+                    ctx.json(new MessageJson(true, "Birthday set"));
+                } catch (SQLException s) {
+                    System.out.println(s);
+                    ctx.json(new MessageJson(false, "Couldnt set Birthday"));
+                }
+            }
+            else{
+                ctx.json(new MessageJson(false,"Query param \"Birthday\" not found"));
+            }
+        };
+    }
+
+    public Handler setEmail(){
+        return ctx ->{
+            String email = ctx.queryParam("Email");
+
+            if(email != null) {
+
+                try {
+                    emailSet.setString(2,email);
+                    emailSet.setString(3,updateUsername(usernameSubject));
+                    emailSet.execute();
+
+                    ctx.json(new MessageJson(true, "Email set"));
+                } catch (SQLException s) {
+                    System.out.println(s);
+                    ctx.json(new MessageJson(false, "Couldnt set email"));
+                }
+            }
+            else{
+                ctx.json(new MessageJson(false,"Query param \"Email\" not found"));
+            }
+        };
+    }
+
+    public Handler setAddress(){
+        return ctx ->{
+            String address = ctx.queryParam("Address");
+
+            if(address != null) {
+
+                try {
+                    addressSet.setString(2,address);
+                    addressSet.setString(3,updateUsername(usernameSubject));
+                    addressSet.execute();
+
+                    ctx.json(new MessageJson(true, "Address set"));
+                } catch (SQLException s) {
+                    System.out.println(s);
+                    ctx.json(new MessageJson(false, "Couldnt set address"));
+                }
+            }
+            else{
+                ctx.json(new MessageJson(false,"Query param \"Address\" not found"));
+            }
+        };
+    }
+
+    public Handler setPhoneNumber(){
+        return ctx ->{
+            String phoneNumber = ctx.queryParam("Phone");
+
+            if(phoneNumber != null) {
+
+                try {
+                    phoneSet.setString(2,phoneNumber);
+                    phoneSet.setString(3,updateUsername(usernameSubject));
+                    phoneSet.execute();
+
+                    ctx.json(new MessageJson(true, "Phone Number set"));
+                } catch (SQLException s) {
+                    System.out.println(s);
+                    ctx.json(new MessageJson(false, "Couldnt set phone number"));
+                }
+            }
+            else{
+                ctx.json(new MessageJson(false,"Query param \"Phone Number\" not found"));
             }
         };
     }
