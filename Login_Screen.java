@@ -1,9 +1,14 @@
 
 import javax.imageio.ImageIO;
+import javax.mail.Header;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.formdev.flatlaf.FlatLightLaf;
+import com.sun.net.httpserver.Headers;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,8 +20,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -126,10 +134,29 @@ public class Login_Screen extends JFrame implements ActionListener, KeyListener 
 		if(checkIfAlreadyExist("lib/token")) {
 
 			String token = getToken();
-			if(!token.equals("")) {
+			if(isTokenValid(token)) {
 				dispose();
-				new Client_GUI(new User("", 0 + "", "", "", "", ""));
+				new Client_GUI(new User());
 			}
+		}
+	}
+
+	private boolean isTokenValid(String token) {
+
+		try {
+			HttpRequest req = HttpRequest.newBuilder(new URI("http://localhost:8001/validateToken")).setHeader("AUTHORIZATION", "Bearer " +token).build();
+
+			HttpClient toServer  = HttpClient.newHttpClient();
+			String response = toServer.send(req, BodyHandlers.ofString()).body();
+
+			try {
+				
+				return new JSONObject(response).getBoolean("Success");	
+			}catch (JSONException e) {
+				return false;
+			}
+		} catch (URISyntaxException | InterruptedException | IOException e) {
+			return false;
 		}
 	}
 

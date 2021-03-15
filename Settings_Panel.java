@@ -139,5 +139,5 @@ public class Settings_Panel extends JPanel implements ActionListener{
 			textFields[i].setEditable(editable);
 		}
 	}
-
+	
 }

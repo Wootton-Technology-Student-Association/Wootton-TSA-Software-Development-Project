@@ -1,11 +1,21 @@
-public class User {
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
-	private String name;
-	private String address;
-	private String dateOfBirth;
-	private String email;
-	private String phoneNumber;
-	private String password;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
+import org.json.JSONObject;
+
+public class User {
 
 	public User(String n,String a,String dob, String e, String phone,String p) {
 		setName(n);
@@ -15,29 +25,39 @@ public class User {
 		setPhoneNumber(phone);
 		setPassword(p);
 	}
+	
+	public User() {
+		
+		performChangeRequest("Name", "");
+		performChangeRequest("Address", "");
+		performChangeRequest("Birth", "");
+		performChangeRequest("Email", "");
+		performChangeRequest("Phone", "");
+		performPasswordChange("");
+	}
 
 	public String getName() {
-		return name;
+		return performGet("Name");
 	}
 
 	public String getAddress() {
-		return address;
+		return performGet("Address");
 	}
 
 	public String getDateOfBirth() {
-		return dateOfBirth;
+		return performGet("Birth");
 	}
 
 	public String getEmail() {
-		return email;
+		return performGet("Email");
 	}
 
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return performGet("Phone");
 	}
 
 	public String getPassword() {
-		return password;
+		return performGet("Password");
 	}
 
 	public boolean setName(String other) {
@@ -45,9 +65,8 @@ public class User {
 		if(other.equals("")) {
 			return false;
 		}
-		name=other;
+		performChangeRequest("Name",other);
 		return true;
-
 	}
 
 	public boolean setAddress(String other) {
@@ -55,9 +74,8 @@ public class User {
 		if(other.equals("")) {
 			return false;
 		}
-		address=other;
+		performChangeRequest("Address",other);
 		return true;
-
 	}
 
 	public boolean setDateOfBirth(String other) {
@@ -65,19 +83,17 @@ public class User {
 		if(!other.matches("^(19|20)\\d\\d([- /.])(0[1-9]|1[012])\\2(0[1-9]|[12][0-9]|3[01])$")) {
 			return false;
 		}
-		dateOfBirth=other;
+		performChangeRequest("Birth",other);
 		return true;
-
 	}
 
 	public boolean setEmail(String other) {
 
 		if(other.equals("")||!other.contains("@")) {
 			return false;
-		}
-		email=other;
+		}	
+		performChangeRequest("Email", other);
 		return true;
-
 	}
 
 	public boolean setPhoneNumber(String other) {
@@ -91,7 +107,7 @@ public class User {
 		if(other.equals("")||other.length()!=10) {
 			return false;
 		}
-		phoneNumber=other;
+		performChangeRequest("Phone", other);
 		return true;
 
 	}
@@ -101,8 +117,112 @@ public class User {
 		if(other.equals("")) {
 			return false;
 		}
-		password=other;
+		performPasswordChange(other);
 		return true;
 
+	}
+	
+	public String performGet(String forWhat) {
+		System.out.println(forWhat);
+		HttpRequest req = null;
+		try {
+			req = HttpRequest.newBuilder(new URI("http://localhost:8001/get" + forWhat)).setHeader("AUTHORIZAION","Bearer " + getToken()).build();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		HttpClient toServer  = HttpClient.newHttpClient();
+		String response = null;
+		try {
+			response = toServer.send(req, BodyHandlers.ofString()).body();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JSONObject respObject = new JSONObject(response);
+		boolean succeded = respObject.getBoolean("Success");
+		if(succeded) {
+		}else {
+			throw new IllegalAccessError("Bad Get Request");
+		}
+		return respObject.getString("Message");
+	}
+	
+	private void performChangeRequest(String forWhat, String credentialToChange) {
+		
+		System.out.println("for what: " + forWhat);
+		System.out.println("cred: " + credentialToChange);
+		System.out.println(getToken());
+		HttpRequest req = null;
+		try {
+			req = HttpRequest.newBuilder(new URI("http://localhost:8001/set" + forWhat + "?" + forWhat + "=" + credentialToChange)).POST(BodyPublishers.ofString("")).setHeader("Authorization", "Bearer " +  getToken()).build();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		HttpClient toServer  = HttpClient.newHttpClient();
+		String response = null;
+		try {
+			response = toServer.send(req, BodyHandlers.ofString()).body();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JSONObject respObject = new JSONObject(response);
+		
+		boolean succeded = respObject.getBoolean("Success");
+		if(succeded) {
+			JOptionPane.showMessageDialog(null, "Changes  Changed Successfully");
+		}else {
+			String message = respObject.getString("Message");
+			JOptionPane.showMessageDialog(null, message);
+		}
+	}
+	
+	private void performPasswordChange(String password) {
+		
+		HttpRequest req = null;
+		try {
+			req = HttpRequest.newBuilder(new URI("http://localhost:8001/setPassword?Password="+password)).POST(BodyPublishers.ofString("")).setHeader("Authorization", "Bearer " + getToken()).build();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		HttpClient toServer  = HttpClient.newHttpClient();
+		String response = null;
+		try {
+			response = toServer.send(req, BodyHandlers.ofString()).body();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JSONObject respObject = new JSONObject(response);
+		
+		boolean succeded = respObject.getBoolean("Success");
+		if(succeded) {
+			JOptionPane.showMessageDialog(null, "Password Changed Successfully");
+		}else {
+			
+			String message = respObject.getString("Message");
+			JOptionPane.showMessageDialog(null, message);
+		}
+	}
+	
+	private int performEmailVerification() {
+		//http://localhost:8001/sendVerification?Username=YOURUSERNAME; use email
+		
+		return 0;
+	}
+	
+	
+	private String getToken() {
+		try {
+			return new Scanner(new File("lib/token")).nextLine();
+		}catch (FileNotFoundException e) {
+			return null;
+		}
 	}
 }

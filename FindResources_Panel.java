@@ -66,7 +66,12 @@ public class FindResources_Panel extends JPanel implements ActionListener, Focus
 			"Career Events"
 	};
 
-	private static final String ABOUT_FIND_RESOURCES = "About Find Resources";
+	private static final String ABOUT_FIND_RESOURCES = ""
+			+ "Welcome, this is first place you should check out after confirming your settings in the settings tab. Here at Project Lift America"
+			+ "we pride ourselves at serving the American People through robust technical solutions aimed ate connecting people. Because we are the all in one assiatance search engine"
+			+ "we will always be a nonprofit and reinvest in making this platform as free as possible free of government intervention, political interferance, or corporate greed."
+			+ "Thank you for chosing Project Lift America and we look forward to helping you one meal, home, and bank account at a time."
+			+ "You are our number one investment so please don't hesitate to email our development team dev.woottontsa.org@gmail.com. There are there 24/7 365.25 day a week to help you in any way possible.";
 	private static final int NUMBER_OF_DEPENDANTS_FONT_SIZE = 7;
 	private static final int SPECIAL_HEADING_FONT_SIZE = 10;
 
@@ -632,7 +637,9 @@ public class FindResources_Panel extends JPanel implements ActionListener, Focus
 		homePanel.add(homePageImage);
 
 		JTextArea aboutFindResourcesPanel = new JTextArea();
+		aboutFindResourcesPanel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
 		aboutFindResourcesPanel.setEditable(false);
+		aboutFindResourcesPanel.setLineWrap(true);
 		aboutFindResourcesPanel.setBackground(Color.WHITE);
 		aboutFindResourcesPanel.setForeground(Color.BLACK);
 		aboutFindResourcesPanel.setText(ABOUT_FIND_RESOURCES);
