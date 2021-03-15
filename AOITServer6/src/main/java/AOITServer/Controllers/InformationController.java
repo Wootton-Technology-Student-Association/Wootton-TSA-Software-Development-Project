@@ -7,6 +7,7 @@ import AOITServer.Singletons.DatabaseSingleton;
 import AOITServer.Tables.AOITUsersTable;
 import io.javalin.http.Handler;
 
+import javax.mail.Address;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,67 +33,62 @@ public class InformationController implements UsernameObserver {
     public InformationController(int connectionIndex, DatabaseSingleton ds,UsernameSubject subject){
         usernameSubject = subject;
 
-        String sqlSet = String.format("UPDATE %s SET ?=? WHERE %s=?", AOITUsersTable.TABLENAME,AOITUsersTable.USERNAME);
-        String sqlGet = String.format("SELECT ? FROM %s",AOITUsersTable.TABLENAME);
-
-        try {
-
-            int index1 = ds.createPreparedStatement(connectionIndex, sqlSet);
+            String sqlSetPassword = String.format("UPDATE %s SET %s=? WHERE %s=?", AOITUsersTable.TABLENAME,AOITUsersTable.PASSWORD,AOITUsersTable.USERNAME);
+            int index1 = ds.createPreparedStatement(connectionIndex, sqlSetPassword);
             passwordSet = ds.getPreparedStatement(index1);
-            passwordSet.setString(1, AOITUsersTable.PASSWORD);
 
 
-            int index2 = ds.createPreparedStatement(connectionIndex, sqlSet);
+            String sqlSetPhone = String.format("UPDATE %s SET %s=? WHERE %s=?", AOITUsersTable.TABLENAME,AOITUsersTable.PHONENUMBER,AOITUsersTable.USERNAME);
+            int index2 = ds.createPreparedStatement(connectionIndex, sqlSetPhone);
             phoneSet = ds.getPreparedStatement(index2);
-            phoneSet.setString(1, AOITUsersTable.PHONENUMBER);
 
 
-            int index3 = ds.createPreparedStatement(connectionIndex, sqlSet);
+            String sqlSetEmail = String.format("UPDATE %s SET %s=? WHERE %s=?", AOITUsersTable.TABLENAME,AOITUsersTable.EMAIL,AOITUsersTable.USERNAME);
+            int index3 = ds.createPreparedStatement(connectionIndex, sqlSetEmail);
             emailSet = ds.getPreparedStatement(index3);
-            emailSet.setString(1, AOITUsersTable.EMAIL);
 
-            int index4 = ds.createPreparedStatement(connectionIndex, sqlSet);
+            String sqlSetBirth = String.format("UPDATE %s SET %s=? WHERE %s=?", AOITUsersTable.TABLENAME,AOITUsersTable.BIRTHDAY,AOITUsersTable.USERNAME);
+            int index4 = ds.createPreparedStatement(connectionIndex, sqlSetBirth);
             birthSet = ds.getPreparedStatement(index4);
-            birthSet.setString(1, AOITUsersTable.BIRTHDAY);
 
-            int index5 = ds.createPreparedStatement(connectionIndex, sqlSet);
+            String sqlSetAddress = String.format("UPDATE %s SET %s=? WHERE %s=?", AOITUsersTable.TABLENAME,AOITUsersTable.ADDRESS,AOITUsersTable.USERNAME);
+            int index5 = ds.createPreparedStatement(connectionIndex, sqlSetAddress);
             addressSet = ds.getPreparedStatement(index5);
-            addressSet.setString(1, AOITUsersTable.ADDRESS);
 
-            int index6 = ds.createPreparedStatement(connectionIndex, sqlSet);
+            String sqlSetName = String.format("UPDATE %s SET %s=? WHERE %s=?", AOITUsersTable.TABLENAME,AOITUsersTable.NAME,AOITUsersTable.USERNAME);
+            int index6 = ds.createPreparedStatement(connectionIndex, sqlSetName);
             nameSet = ds.getPreparedStatement(index6);
-            nameSet.setString(1, AOITUsersTable.NAME);
 
-            int index7 = ds.createPreparedStatement(connectionIndex, sqlGet);
+
+            String sqlGetPassword = String.format("SELECT %s FROM %s WHERE %s=?",AOITUsersTable.PASSWORD,AOITUsersTable.TABLENAME,AOITUsersTable.USERNAME);
+            int index7 = ds.createPreparedStatement(connectionIndex, sqlGetPassword);
             passwordGet = ds.getPreparedStatement(index7);
-            passwordGet.setString(1, AOITUsersTable.PASSWORD);
 
-            int index8 = ds.createPreparedStatement(connectionIndex, sqlGet);
+
+            String sqlGetPhone = String.format("SELECT %s FROM %s WHERE %s=?",AOITUsersTable.PHONENUMBER,AOITUsersTable.TABLENAME,AOITUsersTable.USERNAME);
+            int index8 = ds.createPreparedStatement(connectionIndex, sqlGetPhone);
             phoneGet = ds.getPreparedStatement(index8);
-            phoneGet.setString(1, AOITUsersTable.PHONENUMBER);
 
-            int index9 = ds.createPreparedStatement(connectionIndex, sqlGet);
+
+            String sqlGetEmail = String.format("SELECT %s FROM %s WHERE %s=?",AOITUsersTable.EMAIL,AOITUsersTable.TABLENAME,AOITUsersTable.USERNAME);
+            int index9 = ds.createPreparedStatement(connectionIndex, sqlGetEmail);
             emailGet = ds.getPreparedStatement(index9);
-            emailGet.setString(1, AOITUsersTable.EMAIL);
 
-            int index10 = ds.createPreparedStatement(connectionIndex, sqlGet);
+
+            String sqlGetBirthday = String.format("SELECT %s FROM %s WHERE %s=?",AOITUsersTable.BIRTHDAY,AOITUsersTable.TABLENAME,AOITUsersTable.USERNAME);
+            int index10 = ds.createPreparedStatement(connectionIndex, sqlGetBirthday);
             birthGet = ds.getPreparedStatement(index10);
-            birthGet.setString(1, AOITUsersTable.BIRTHDAY);
 
-            int index11 = ds.createPreparedStatement(connectionIndex, sqlGet);
+
+            String sqlGetAddress = String.format("SELECT %s FROM %s WHERE %s=?",AOITUsersTable.ADDRESS,AOITUsersTable.TABLENAME,AOITUsersTable.USERNAME);
+            int index11 = ds.createPreparedStatement(connectionIndex, sqlGetAddress);
             addressGet = ds.getPreparedStatement(index11);
-            addressGet.setString(1, AOITUsersTable.ADDRESS);
 
-            int index12 = ds.createPreparedStatement(connectionIndex, sqlGet);
+
+            String sqlGetName = String.format("SELECT %s FROM %s WHERE %s=?",AOITUsersTable.NAME,AOITUsersTable.TABLENAME,AOITUsersTable.USERNAME);
+            int index12 = ds.createPreparedStatement(connectionIndex, sqlGetName);
             nameGet = ds.getPreparedStatement(index12);
-            nameGet.setString(1, AOITUsersTable.NAME);
 
-
-
-
-        }catch(SQLException s){
-            System.out.println(s);
-        }
 
 
     }
@@ -100,7 +96,7 @@ public class InformationController implements UsernameObserver {
     public Handler getName(){
         return ctx ->{
             try {
-                nameGet.setString(2,updateUsername(usernameSubject));
+                nameGet.setString(1,updateUsername(usernameSubject));
                 ResultSet rs =  nameGet.executeQuery();
 
                 if(rs.next()){
@@ -121,10 +117,12 @@ public class InformationController implements UsernameObserver {
     public Handler getPassword(){
         return ctx ->{
             try {
-                passwordGet.setString(2,updateUsername(usernameSubject));
+
+                passwordGet.setString(1,updateUsername(usernameSubject));
                 ResultSet rs =  passwordGet.executeQuery();
 
                 if(rs.next()){
+                    System.out.println(rs.getString(AOITUsersTable.PASSWORD));
                     ctx.json(new MessageJson(true, rs.getString(AOITUsersTable.PASSWORD)));
 
                 }
@@ -134,6 +132,7 @@ public class InformationController implements UsernameObserver {
 
                 rs.close();
             }catch(SQLException s){
+                System.out.println(s);
                 ctx.json(new MessageJson(false,"Could not get Password"));
             }
         };
@@ -142,7 +141,7 @@ public class InformationController implements UsernameObserver {
     public Handler getEmail(){
         return ctx ->{
             try {
-                emailGet.setString(2,updateUsername(usernameSubject));
+                emailGet.setString(1,updateUsername(usernameSubject));
                 ResultSet rs =  emailGet.executeQuery();
 
                 if(rs.next()){
@@ -163,7 +162,7 @@ public class InformationController implements UsernameObserver {
     public Handler getAddress(){
         return ctx ->{
             try {
-                addressGet.setString(2,updateUsername(usernameSubject));
+                addressGet.setString(1,updateUsername(usernameSubject));
                 ResultSet rs =  addressGet.executeQuery();
 
                 if(rs.next()){
@@ -184,7 +183,7 @@ public class InformationController implements UsernameObserver {
     public Handler getPhone(){
         return ctx ->{
             try {
-                phoneGet.setString(2,updateUsername(usernameSubject));
+                phoneGet.setString(1,updateUsername(usernameSubject));
                 ResultSet rs =  nameGet.executeQuery();
 
                 if(rs.next()){
@@ -205,7 +204,7 @@ public class InformationController implements UsernameObserver {
     public Handler getBirthday(){
         return ctx ->{
             try {
-                birthGet.setString(2,updateUsername(usernameSubject));
+                birthGet.setString(1,updateUsername(usernameSubject));
                 ResultSet rs =  birthGet.executeQuery();
 
                 if(rs.next()){
@@ -230,8 +229,8 @@ public class InformationController implements UsernameObserver {
             if(name != null) {
 
                 try {
-                    nameSet.setString(2,name);
-                    nameSet.setString(3,updateUsername(usernameSubject));
+                    nameSet.setString(1,name);
+                    nameSet.setString(2,updateUsername(usernameSubject));
                     nameSet.execute();
 
                     ctx.json(new MessageJson(true, "Name set"));
@@ -253,8 +252,8 @@ public class InformationController implements UsernameObserver {
             if(password != null) {
 
                 try {
-                    passwordSet.setString(2,password);
-                    passwordSet.setString(3,updateUsername(usernameSubject));
+                    passwordSet.setString(1,password);
+                    passwordSet.setString(2,updateUsername(usernameSubject));
                     passwordSet.execute();
 
                     ctx.json(new MessageJson(true, "Password set"));
@@ -276,8 +275,8 @@ public class InformationController implements UsernameObserver {
             if(birthday != null) {
 
                 try {
-                    birthSet.setString(2,birthday);
-                    birthSet.setString(3,updateUsername(usernameSubject));
+                    birthSet.setString(1,birthday);
+                    birthSet.setString(2,updateUsername(usernameSubject));
                     birthSet.execute();
 
                     ctx.json(new MessageJson(true, "Birthday set"));
@@ -299,8 +298,8 @@ public class InformationController implements UsernameObserver {
             if(email != null) {
 
                 try {
-                    emailSet.setString(2,email);
-                    emailSet.setString(3,updateUsername(usernameSubject));
+                    emailSet.setString(1,email);
+                    emailSet.setString(2,updateUsername(usernameSubject));
                     emailSet.execute();
 
                     ctx.json(new MessageJson(true, "Email set"));
@@ -322,8 +321,8 @@ public class InformationController implements UsernameObserver {
             if(address != null) {
 
                 try {
-                    addressSet.setString(2,address);
-                    addressSet.setString(3,updateUsername(usernameSubject));
+                    addressSet.setString(1,address);
+                    addressSet.setString(2,updateUsername(usernameSubject));
                     addressSet.execute();
 
                     ctx.json(new MessageJson(true, "Address set"));
@@ -345,8 +344,8 @@ public class InformationController implements UsernameObserver {
             if(phoneNumber != null) {
 
                 try {
-                    phoneSet.setString(2,phoneNumber);
-                    phoneSet.setString(3,updateUsername(usernameSubject));
+                    phoneSet.setString(1,phoneNumber);
+                    phoneSet.setString(2,updateUsername(usernameSubject));
                     phoneSet.execute();
 
                     ctx.json(new MessageJson(true, "Phone Number set"));

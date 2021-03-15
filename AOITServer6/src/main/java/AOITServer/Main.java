@@ -84,11 +84,6 @@ public class Main {
         server.post("/setBirth",informationController.setBirthday(),roles(Roles.USER,Roles.ADMIN));
         server.post("/setAddress",informationController.setAddress(),roles(Roles.USER,Roles.ADMIN));
 
-
-
-
-
-
         ServerLogging serverLog = new ServerLogging(0,ds);
 
         accessManager.addLoggingObserver(serverLog);
