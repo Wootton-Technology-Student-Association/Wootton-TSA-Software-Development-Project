@@ -2,7 +2,7 @@ package AOITServer.Controllers;
 
 
 import AOITServer.Adapters.HttpRequestClient;
-import AOITServer.JsonClasses.ErrorJson;
+import AOITServer.JsonClasses.MessageJson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -57,7 +57,7 @@ public class MapController {
 
             }
             else{
-               ctx.json(new ErrorJson(false," Address query parameter not provided ")) ;
+               ctx.json(new MessageJson(false," Address query parameter not provided ")) ;
             }
         };
 

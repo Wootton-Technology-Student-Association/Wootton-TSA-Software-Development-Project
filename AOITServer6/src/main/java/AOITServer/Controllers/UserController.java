@@ -1,7 +1,7 @@
 package AOITServer.Controllers;
 
 import AOITServer.Factories.JWTFactory;
-import AOITServer.JsonClasses.ErrorJson;
+import AOITServer.JsonClasses.MessageJson;
 import AOITServer.JsonClasses.JWTJson;
 import AOITServer.Singletons.DatabaseSingleton;
 import AOITServer.Tables.AOITUsersTable;
@@ -35,10 +35,10 @@ public class UserController {
             String username = ctx.queryParam("Username");
             String password = ctx.queryParam("Password");
             if(username == null){
-                ctx.status(404).json(new ErrorJson(false,"Query parameter \"Username\" not found"));
+                ctx.status(404).json(new MessageJson(false,"Query parameter \"Username\" not found"));
             }
             else if(password == null){
-                ctx.status(404).json(new ErrorJson(false,"Query parameter \"Password\" not found"));
+                ctx.status(404).json(new MessageJson(false,"Query parameter \"Password\" not found"));
             }
             else{
                 psCreateUser.setString(1,username);
@@ -48,10 +48,10 @@ public class UserController {
                 try {
                     psCreateUser.execute();
                 }catch(SQLIntegrityConstraintViolationException e){
-                    ctx.status(404).json(new ErrorJson(false,"Username already exists"));
+                    ctx.status(404).json(new MessageJson(false,"Username already exists"));
                 }catch(SQLException e){
                     System.out.println(e);
-                    ctx.status(404).json(new ErrorJson(false,"Could not create User"));
+                    ctx.status(404).json(new MessageJson(false,"Could not create User"));
                 }
             }
         };
@@ -63,10 +63,10 @@ public class UserController {
             String username = ctx.queryParam("Username");
             String password = ctx.queryParam("Password");
             if(username == null){
-                ctx.status(404).json(new ErrorJson(false,"Query parameter \"Username\" not found"));
+                ctx.status(404).json(new MessageJson(false,"Query parameter \"Username\" not found"));
             }
             else if(password == null){
-                ctx.status(404).json(new ErrorJson(false,"Query parameter \"Password\" not found"));
+                ctx.status(404).json(new MessageJson(false,"Query parameter \"Password\" not found"));
             }
             else{
                 psLogin.setString(1,username);
@@ -81,13 +81,13 @@ public class UserController {
                     }
 
                     else{
-                        ctx.status(401).json(new ErrorJson(false,"Unauthorized"));
+                        ctx.status(401).json(new MessageJson(false,"Unauthorized"));
                     }
 
                     rs.close();
 
                 }catch(SQLException e){
-                    ctx.status(401).json(new ErrorJson(false,"Unauthorized"));
+                    ctx.status(401).json(new MessageJson(false,"Unauthorized"));
                 }
 
             }
@@ -96,7 +96,7 @@ public class UserController {
 
     public Handler validateToken(){
         return ctx ->{
-          ctx.json(new ErrorJson(true,""));
+          ctx.json(new MessageJson(true,""));
         };
     }
 

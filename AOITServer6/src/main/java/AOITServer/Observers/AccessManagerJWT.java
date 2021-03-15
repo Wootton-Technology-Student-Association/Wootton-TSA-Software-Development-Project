@@ -1,6 +1,6 @@
 package AOITServer.Observers;
 
-import AOITServer.JsonClasses.ErrorJson;
+import AOITServer.JsonClasses.MessageJson;
 import AOITServer.Roles;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.javalin.core.security.AccessManager;
@@ -48,11 +48,11 @@ public class AccessManagerJWT implements AccessManager,LoggingSubject,UsernameSu
                 handler.handle(ctx);
             } catch (Exception e) {
                 e.printStackTrace();
-                ctx.status(404).json(new ErrorJson(false,"Failed accessing URL"));
+                ctx.status(404).json(new MessageJson(false,"Failed accessing URL"));
             }
 
         } else {
-            ctx.status(401).json(new ErrorJson(false,"Unauthorized"));
+            ctx.status(401).json(new MessageJson(false,"Unauthorized"));
 
         }
 

@@ -1,7 +1,7 @@
 package AOITServer.Controllers;
 
 import AOITServer.Adapters.EmailClient;
-import AOITServer.JsonClasses.ErrorJson;
+import AOITServer.JsonClasses.MessageJson;
 import AOITServer.Singletons.DatabaseSingleton;
 import AOITServer.Tables.AOITEmailKeyTable;
 import AOITServer.Tables.AOITUsersTable;
@@ -54,7 +54,7 @@ public class PasswordController {
         return ctx -> {
             String username = ctx.queryParam("Username");
             if (username == null) {
-                ctx.status(404).json(new ErrorJson(false,"Query parameter \"Username\" not found"));
+                ctx.status(404).json(new MessageJson(false,"Query parameter \"Username\" not found"));
             }
             else{
                 psGetEmail.setString(1,username);
@@ -76,19 +76,19 @@ public class PasswordController {
                         psSetEmailKey.execute();
 
                         if(!ce.sendEmail("Password Reset",key,email)){
-                            ctx.status(404).json(new ErrorJson(false,"Email could not be sent"));
+                            ctx.status(404).json(new MessageJson(false,"Email could not be sent"));
                         }
                         else{
-                            ctx.json(new ErrorJson(true,""));
+                            ctx.json(new MessageJson(true,""));
                         }
                     }
                     else{
-                        ctx.status(404).json(new ErrorJson(false,"Email not set by user"));
+                        ctx.status(404).json(new MessageJson(false,"Email not set by user"));
                     }
 
 
                 }catch(SQLException s){
-                    ctx.status(404).json(new ErrorJson(false,"Could not send validation key"));
+                    ctx.status(404).json(new MessageJson(false,"Could not send validation key"));
                 }
 
 
@@ -105,13 +105,13 @@ public class PasswordController {
            String validationKey = ctx.queryParam("Key");
 
             if (username == null) {
-                ctx.status(404).json(new ErrorJson(false,"Query parameter \"Username\" not found"));
+                ctx.status(404).json(new MessageJson(false,"Query parameter \"Username\" not found"));
             }
             else if(password == null){
-                ctx.status(404).json(new ErrorJson(false,"Query parameter \"NewPassword\" not found"));
+                ctx.status(404).json(new MessageJson(false,"Query parameter \"NewPassword\" not found"));
             }
             else if(validationKey == null){
-                ctx.status(404).json(new ErrorJson(false,"Query parameter \"Key\" not found"));
+                ctx.status(404).json(new MessageJson(false,"Query parameter \"Key\" not found"));
             }
             else{
                 psGetKeyInformation.setString(1,username);
@@ -133,17 +133,17 @@ public class PasswordController {
 
 
                         } else {
-                            ctx.status(401).json(new ErrorJson(false, "Unauthorized"));
+                            ctx.status(401).json(new MessageJson(false, "Unauthorized"));
                         }
                         rs.close();
                     }
                     else{
-                        ctx.status(404).json(new ErrorJson(false,"Validation key does not exist"));
+                        ctx.status(404).json(new MessageJson(false,"Validation key does not exist"));
                     }
 
                 }catch(SQLException e){
                     System.out.println(e);
-                    ctx.status(404).json(new ErrorJson(false,"Could not reset password"));
+                    ctx.status(404).json(new MessageJson(false,"Could not reset password"));
                 }
 
             }
